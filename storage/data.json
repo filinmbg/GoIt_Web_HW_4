@@ -1,7 +1,10 @@
-{}{
-    "username": "Ice",
-    "message": "Meow\r\n"
-}{
-    "username": "Sasha",
-    "message": "Hello!"
+{
+    "2023-10-16 21:33:11.319303": {
+        "username": "Vaska",
+        "message": "Help me"
+    },
+    "2023-10-16 21:33:30.035372": {
+        "username": "Cat",
+        "message": "Meow"
+    }
 }

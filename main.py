@@ -3,6 +3,7 @@ import logging
 import mimetypes
 import urllib.parse
 import socket
+from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from threading import Thread
@@ -68,9 +69,20 @@ class GoitFramework(BaseHTTPRequestHandler):
 def save_data_from_form(data):
     parse_data = urllib.parse.unquote_plus(data.decode())
     try:
-        parse_dict = {key: value for key, value in [el.split('=') for el in parse_data.split('&')]}
-        with open('storage/data.json', 'a', encoding='utf-8') as file:
-            json.dump(parse_dict, file, ensure_ascii=False, indent=4)
+        time = str(datetime.now())
+        parse_dict = {time: {}}
+        for key, value in [el.split('=') for el in parse_data.split('&')]:
+            parse_dict[time][key] = value
+
+        with open('storage/data.json', 'r+', encoding='utf-8') as file:
+            try:
+                data_dict = json.load(file)
+            except:
+                data_dict = {}
+            data_dict.update(parse_dict)
+            file.seek(0)
+            json.dump(data_dict, file, ensure_ascii=False, indent=4)
+            file.truncate()
     except ValueError as err:
         logging.error(err)
     except OSError as err:
